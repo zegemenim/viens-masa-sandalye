@@ -1,0 +1,217 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    /* Brand Color Palette (from WordPress Astra config) */
+    --color-brand-gold:        #DCA54A;
+    --color-brand-gold-dark:   #D09A40;
+    --color-brand-navy:        #0F172A;
+    --color-brand-cream:       #FAF5E5;
+    --color-brand-cream-mid:   #F0E6C5;
+    --color-brand-gray:        #4A4A4A;
+    --color-brand-dark:        #141004;
+    --color-brand-charcoal:    #222222;
+
+    /* Typography — Nunito Sans (UI/headings) + Lora (body serif) via Google Fonts in layout */
+    --font-sans:    'Nunito Sans', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-serif:   'Lora', ui-serif, Georgia, serif;
+    --font-display: 'Nunito Sans', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ─── Base ─────────────────────────────────────────────────── */
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background-color: var(--color-brand-cream);
+        color: var(--color-brand-gray);
+        font-family: var(--font-serif);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-display);
+        color: var(--color-brand-navy);
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+}
+
+/* ─── Components ────────────────────────────────────────────── */
+@layer components {
+
+    /* Gold accent underline divider */
+    .section-divider {
+        width: 4rem;
+        height: 3px;
+        background-color: var(--color-brand-gold);
+        border-radius: 9999px;
+    }
+
+    /* Primary CTA button */
+    .btn-gold {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: var(--color-brand-gold);
+        color: #ffffff;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.8125rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0.9rem 2rem;
+        border: 2px solid var(--color-brand-gold);
+        transition: all 0.25s ease;
+    }
+    .btn-gold:hover {
+        background-color: transparent;
+        color: var(--color-brand-gold);
+    }
+
+    /* Outline button */
+    .btn-outline-gold {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: transparent;
+        color: var(--color-brand-gold);
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.8125rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0.9rem 2rem;
+        border: 2px solid var(--color-brand-gold);
+        transition: all 0.25s ease;
+    }
+    .btn-outline-gold:hover {
+        background-color: var(--color-brand-gold);
+        color: #ffffff;
+    }
+
+    .btn-outline-white {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: transparent;
+        color: #ffffff;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.8125rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0.9rem 2rem;
+        border: 2px solid #ffffff;
+        transition: all 0.25s ease;
+    }
+    .btn-outline-white:hover {
+        background-color: #ffffff;
+        color: var(--color-brand-navy);
+    }
+
+    /* Section label */
+    .section-label {
+        font-family: var(--font-display);
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-brand-gold);
+    }
+
+    /* Product card */
+    .product-card {
+        background-color: #ffffff;
+        border: 1px solid var(--color-brand-cream-mid);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px -12px rgba(20, 16, 4, 0.18);
+    }
+    .product-card:hover .product-card__img {
+        transform: scale(1.05);
+    }
+    .product-card__img {
+        transition: transform 0.4s ease;
+    }
+
+    /* Stat counter item */
+    .stat-item {
+        @apply flex flex-col items-center justify-center p-6 border border-white/5;
+    }
+    .stat-item__number {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 700;
+        color: var(--color-brand-gold);
+        line-height: 1;
+    }
+    .stat-item__label {
+        margin-top: 0.5rem;
+        font-family: var(--font-display);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-brand-gray);
+    }
+}
+
+/* ─── Utilities ─────────────────────────────────────────────── */
+@layer utilities {
+    .text-brand-gold      { color: var(--color-brand-gold); }
+    .text-brand-navy      { color: var(--color-brand-navy); }
+    .text-brand-gray      { color: var(--color-brand-gray); }
+    .text-brand-cream     { color: var(--color-brand-cream); }
+
+    .bg-brand-gold        { background-color: var(--color-brand-gold); }
+    .bg-brand-navy        { background-color: var(--color-brand-navy); }
+    .bg-brand-cream       { background-color: var(--color-brand-cream); }
+    .bg-brand-cream-mid   { background-color: var(--color-brand-cream-mid); }
+    .bg-brand-dark        { background-color: var(--color-brand-dark); }
+
+    .border-brand-gold    { border-color: var(--color-brand-gold); }
+    .border-brand-navy    { border-color: var(--color-brand-navy); }
+    .border-brand-cream-mid { border-color: var(--color-brand-cream-mid); }
+
+    /* Hero gradient overlay */
+    .hero-overlay::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(15,23,42,0.45) 0%, rgba(15,23,42,0.72) 100%);
+    }
+
+    /* Animated underline for section headings */
+    .heading-line {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 0.75rem;
+    }
+    .heading-line::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        width: 3rem;
+        height: 3px;
+        background-color: var(--color-brand-gold);
+        border-radius: 9999px;
+    }
+}
