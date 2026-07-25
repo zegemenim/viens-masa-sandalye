@@ -19,10 +19,12 @@
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
 
     {{-- AOS CSS --}}
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"></noscript>
 
     {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -51,7 +53,7 @@
             {{-- Logo --}}
             <a href="{{ route('index') }}" class="flex-shrink-0 group flex items-center gap-3">
                 @if(!empty($siteSettings['logo_path']))
-                    <img src="{{ asset('storage/' . $siteSettings['logo_path']) }}" alt="{{ $siteSettings['site_name'] ?? 'Viens' }}" class="h-10 w-auto object-contain transition-transform group-hover:opacity-80">
+                    <img src="{{ asset('storage/' . $siteSettings['logo_path']) }}" alt="{{ $siteSettings['site_name'] ?? 'Viens' }}" width="160" height="40" decoding="async" class="h-10 w-auto object-contain transition-transform group-hover:opacity-80">
                 @else
                     <div class="flex flex-col justify-center">
                         <span class="font-display font-semibold text-white text-2xl tracking-[0.15em] uppercase leading-none">{{ explode(' ', $siteSettings['site_name'] ?? 'VIENS')[0] }}</span>
@@ -79,7 +81,7 @@
             </nav>
 
             {{-- Mobile Menu Button --}}
-            <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 flex flex-col justify-center items-end gap-1.5 focus:outline-none z-50">
+            <button id="mobile-menu-btn" aria-label="Menüyü Aç/Kapat" class="lg:hidden w-10 h-10 flex flex-col justify-center items-end gap-1.5 focus:outline-none z-50">
                 <span class="w-6 h-[1px] bg-white transition-all duration-300 origin-right" id="line-1"></span>
                 <span class="w-4 h-[1px] bg-brand-gold transition-all duration-300" id="line-2"></span>
                 <span class="w-6 h-[1px] bg-white transition-all duration-300 origin-right" id="line-3"></span>
@@ -125,7 +127,7 @@
                 <div class="lg:pr-8">
                     <a href="{{ route('index') }}" class="inline-block mb-8">
                         @if(!empty($siteSettings['logo_path']))
-                            <img src="{{ asset('storage/' . $siteSettings['logo_path']) }}" alt="{{ $siteSettings['site_name'] ?? 'Viens' }}" class="h-8 w-auto object-contain grayscale opacity-70">
+                            <img src="{{ asset('storage/' . $siteSettings['logo_path']) }}" alt="{{ $siteSettings['site_name'] ?? 'Viens' }}" width="160" height="40" decoding="async" class="h-8 w-auto object-contain grayscale opacity-80">
                         @else
                             <div class="flex flex-col">
                                 <span class="font-display font-semibold text-white text-2xl tracking-[0.15em] uppercase leading-none">{{ explode(' ', $siteSettings['site_name'] ?? 'VIENS')[0] }}</span>
@@ -133,12 +135,12 @@
                             </div>
                         @endif
                     </a>
-                    <p class="text-white/40 text-[0.8rem] leading-loose font-serif mb-8">
+                    <p class="text-white/70 text-[0.8rem] leading-loose font-serif mb-8">
                         {{ $siteSettings['site_description'] ?? "Kalite ve zarafeti yaşam alanlarınıza taşıyoruz. Zamanın ötesinde tasarımlarla, evinizin en güzel köşesi için buradayız." }}
                     </p>
                     <div class="flex items-center gap-4">
                         @if(!empty($siteSettings['social_instagram']))
-                        <a href="{{ $siteSettings['social_instagram'] }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-brand-gold hover:text-brand-gold transition-colors text-white/50">
+                        <a href="{{ $siteSettings['social_instagram'] }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram sayfamızı ziyaret edin" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-brand-gold hover:text-brand-gold transition-colors text-white/70">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.2C8.9 95.6.7 127.4-.9 163.3c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                         </a>
                         @endif
@@ -151,11 +153,11 @@
                         Sayfalar
                     </h4>
                     <ul class="space-y-4 font-display text-[0.7rem] tracking-[0.1em] uppercase">
-                        <li><a href="{{ route('index') }}" class="text-white/50 hover:text-brand-gold transition-colors">Ana Sayfa</a></li>
-                        <li><a href="{{ route('about') }}" class="text-white/50 hover:text-brand-gold transition-colors">Kurumsal</a></li>
-                        <li><a href="{{ route('category.show', 'masalar') }}" class="text-white/50 hover:text-brand-gold transition-colors">Masalar</a></li>
-                        <li><a href="{{ route('category.show', 'sandalyeler') }}" class="text-white/50 hover:text-brand-gold transition-colors">Sandalyeler</a></li>
-                        <li><a href="{{ route('blog.index') }}" class="text-white/50 hover:text-brand-gold transition-colors">Blog</a></li>
+                        <li><a href="{{ route('index') }}" class="text-white/70 hover:text-brand-gold transition-colors">Ana Sayfa</a></li>
+                        <li><a href="{{ route('about') }}" class="text-white/70 hover:text-brand-gold transition-colors">Kurumsal</a></li>
+                        <li><a href="{{ route('category.show', 'masalar') }}" class="text-white/70 hover:text-brand-gold transition-colors">Masalar</a></li>
+                        <li><a href="{{ route('category.show', 'sandalyeler') }}" class="text-white/70 hover:text-brand-gold transition-colors">Sandalyeler</a></li>
+                        <li><a href="{{ route('blog.index') }}" class="text-white/70 hover:text-brand-gold transition-colors">Blog</a></li>
                     </ul>
                 </div>
 
@@ -167,17 +169,17 @@
                     <ul class="space-y-5">
                         <li class="flex flex-col gap-1.5">
                             <span class="text-brand-gold text-[0.65rem] font-display tracking-[0.15em] uppercase">Adres</span>
-                            <span class="text-white/50 text-sm leading-relaxed font-serif">{{ $siteSettings['contact_address'] ?? 'Modoko, Barbaros Hayrettin Paşa Cad. İstanbul' }}</span>
+                            <span class="text-white/70 text-sm leading-relaxed font-serif">{{ $siteSettings['contact_address'] ?? 'Modoko, Barbaros Hayrettin Paşa Cad. İstanbul' }}</span>
                         </li>
                         <li class="flex flex-col gap-1.5">
                             <span class="text-brand-gold text-[0.65rem] font-display tracking-[0.15em] uppercase">Telefon</span>
-                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $siteSettings['contact_phone'] ?? '+905522802929') }}" class="text-white/80 hover:text-brand-gold transition-colors font-display tracking-wider">
+                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $siteSettings['contact_phone'] ?? '+905522802929') }}" class="text-white/90 hover:text-brand-gold transition-colors font-display tracking-wider">
                                 {{ $siteSettings['contact_phone'] ?? '+90 552 280 29 29' }}
                             </a>
                         </li>
                         <li class="flex flex-col gap-1.5">
                             <span class="text-brand-gold text-[0.65rem] font-display tracking-[0.15em] uppercase">Saatler</span>
-                            <span class="text-white/50 text-sm font-serif">{{ $siteSettings['working_hours'] ?? 'Hergün: 09:00 - 18:30' }}</span>
+                            <span class="text-white/70 text-sm font-serif">{{ $siteSettings['working_hours'] ?? 'Hergün: 09:00 - 18:30' }}</span>
                         </li>
                     </ul>
                 </div>
@@ -188,7 +190,7 @@
                         Showroom
                     </h4>
                     <div class="border border-white/10 p-6">
-                        <p class="text-white/50 text-xs font-serif leading-relaxed mb-6">Koleksiyonlarımızı yakından incelemek, kahvemizi içmek ve detaylı bilgi almak için sizi mağazamıza bekliyoruz.</p>
+                        <p class="text-white/70 text-xs font-serif leading-relaxed mb-6">Koleksiyonlarımızı yakından incelemek, kahvemizi içmek ve detaylı bilgi almak için sizi mağazamıza bekliyoruz.</p>
                         <a href="{{ route('contact') }}" class="inline-flex items-center justify-center w-full py-3 border border-brand-gold text-brand-gold text-[0.65rem] font-display tracking-[0.2em] uppercase hover:bg-brand-gold hover:text-brand-navy transition-colors">
                             Yol Tarifi Al
                         </a>
@@ -199,8 +201,8 @@
 
             {{-- Bottom Bar --}}
             <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-                <p class="text-white/30 text-[0.7rem] font-display tracking-wide uppercase">&copy; {{ date('Y') }} {{ $siteSettings['site_name'] ?? 'Viens' }}. Tüm hakları saklıdır.</p>
-                <div class="flex items-center gap-6 text-[0.7rem] font-display text-white/30 tracking-wide uppercase">
+                <p class="text-white/60 text-[0.7rem] font-display tracking-wide uppercase">&copy; {{ date('Y') }} {{ $siteSettings['site_name'] ?? 'Viens' }}. Tüm hakları saklıdır.</p>
+                <div class="flex items-center gap-6 text-[0.7rem] font-display text-white/60 tracking-wide uppercase">
                     <a href="{{ route('privacyPolicy') }}" class="hover:text-brand-gold transition-colors">Gizlilik Politikası</a>
                 </div>
             </div>
@@ -226,24 +228,31 @@
         const header = document.getElementById('main-header');
         const topBar = document.getElementById('top-bar');
 
-        if (isHomePage) {
+        if (isHomePage && header) {
+            let ticking = false;
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    header.classList.remove('bg-transparent', 'border-white/5');
-                    header.classList.add('bg-brand-navy/95', 'backdrop-blur-md', 'shadow-sm');
-                    if(topBar) {
-                        topBar.classList.add('h-0', 'py-0', 'overflow-hidden', 'opacity-0');
-                        topBar.classList.remove('py-2');
-                    }
-                } else {
-                    header.classList.add('bg-transparent', 'border-white/5');
-                    header.classList.remove('bg-brand-navy/95', 'backdrop-blur-md', 'shadow-sm');
-                    if(topBar) {
-                        topBar.classList.remove('h-0', 'py-0', 'overflow-hidden', 'opacity-0');
-                        topBar.classList.add('py-2');
-                    }
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        if (window.scrollY > 50) {
+                            header.classList.remove('bg-transparent', 'border-white/5');
+                            header.classList.add('bg-brand-navy/95', 'backdrop-blur-md', 'shadow-sm');
+                            if(topBar) {
+                                topBar.classList.add('h-0', 'py-0', 'overflow-hidden', 'opacity-0');
+                                topBar.classList.remove('py-2');
+                            }
+                        } else {
+                            header.classList.add('bg-transparent', 'border-white/5');
+                            header.classList.remove('bg-brand-navy/95', 'backdrop-blur-md', 'shadow-sm');
+                            if(topBar) {
+                                topBar.classList.remove('h-0', 'py-0', 'overflow-hidden', 'opacity-0');
+                                topBar.classList.add('py-2');
+                            }
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
                 }
-            });
+            }, { passive: true });
         }
 
         // Mobile Menu Logic
@@ -275,13 +284,19 @@
     </script>
 
     {{-- AOS JS --}}
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script>
-        AOS.init({
-            duration: 900,
-            once: true,
-            offset: 50,
-            easing: 'ease-out-quart'
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof AOS !== 'undefined') {
+                window.requestAnimationFrame(() => {
+                    AOS.init({
+                        duration: 800,
+                        once: true,
+                        offset: 50,
+                        easing: 'ease-out-quart'
+                    });
+                });
+            }
         });
     </script>
 </body>

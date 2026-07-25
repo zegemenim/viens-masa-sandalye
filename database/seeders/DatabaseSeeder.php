@@ -43,6 +43,8 @@ class DatabaseSeeder extends Seeder
             SiteSetting::set($key, $value);
         }
 
+        $this->call(TextAndSeoSettingsSeeder::class);
+
         // 3. Categories
         $catMasalar = Category::firstOrCreate(['slug' => 'masalar'], ['name' => 'Masalar', 'description' => 'Ahşap, mermer ve cam detaylı modern yemek masası modelleri.']);
         $catSandalyeler = Category::firstOrCreate(['slug' => 'sandalyeler'], ['name' => 'Sandalyeler', 'description' => 'Konforlu, kumaş ve ahşap ayaklı şık sandalye koleksiyonları.']);

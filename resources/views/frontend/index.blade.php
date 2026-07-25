@@ -49,7 +49,7 @@
             {{-- Label --}}
             <div class="flex items-center gap-4 mb-8" data-aos="fade-right">
                 <div class="w-12 h-[1px] bg-brand-gold"></div>
-                <span class="text-white/60 text-[0.65rem] font-display tracking-[0.3em] uppercase">Premium Mobilya</span>
+                <span class="text-white/80 text-[0.65rem] font-display tracking-[0.3em] uppercase">Premium Mobilya</span>
             </div>
 
             {{-- Heading --}}
@@ -75,7 +75,7 @@
                 @foreach(['30+ Yıllık Deneyim', '1.000+ Mutlu Müşteri', '400m² Showroom'] as $badge)
                 <div class="flex items-center gap-2">
                     <div class="w-1.5 h-1.5 rounded-full bg-brand-gold"></div>
-                    <span class="text-white/60 text-xs font-display font-semibold tracking-wider uppercase">{{ $badge }}</span>
+                    <span class="text-white/80 text-xs font-display font-semibold tracking-wider uppercase">{{ $badge }}</span>
                 </div>
                 @endforeach
             </div>
@@ -117,7 +117,7 @@
             <a href="{{ route('category.show', $cat->slug) }}"
                class="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 px-10 py-6 hover:bg-brand-cream transition-colors group">
                 <span class="font-display font-bold text-brand-navy text-sm group-hover:text-brand-gold transition-colors">{{ $cat->name }}</span>
-                <span class="text-brand-gray/50 text-[0.65rem] font-display">{{ $cat->products_count }} ürün</span>
+                <span class="text-brand-gray/70 text-[0.65rem] font-display">{{ $cat->products_count }} ürün</span>
             </a>
             @empty
             @foreach(['Masalar', 'Sandalyeler', 'Yemek Odası', 'Bar Sandalyeleri'] as $n)
@@ -145,7 +145,7 @@
             {{-- Image --}}
             <div class="relative order-1" data-aos="fade-right">
                 <div class="aspect-[4/3] bg-brand-cream-mid overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1000&auto=format&fit=crop&q=80" alt="Viens Showroom İç Görünüm" class="w-full h-full object-cover" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&auto=format&fit=crop&q=75" width="800" height="600" decoding="async" alt="Viens Showroom İç Görünüm" class="w-full h-full object-cover" loading="lazy">
                 </div>
                 {{-- Decorative elements --}}
                 <div class="absolute -bottom-6 -left-6 w-32 h-32 border-2 border-brand-gold/20 -z-10"></div>
@@ -194,7 +194,7 @@
             ] as $stat)
             <div class="stat-item py-12">
                 <div class="stat-item__number">{{ $stat['number'] }}</div>
-                <div class="stat-item__label text-white/40">{{ $stat['label'] }}</div>
+                <div class="stat-item__label text-white/70">{{ $stat['label'] }}</div>
             </div>
             @endforeach
         </div>
@@ -224,7 +224,7 @@
             @php
                 $featImg = $product->image_path 
                     ? (\Illuminate\Support\Str::startsWith($product->image_path, 'http') ? $product->image_path : asset('storage/' . $product->image_path)) 
-                    : 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&auto=format&fit=crop&q=80';
+                    : 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=75';
             @endphp
             <a href="{{ route('product.show', $product->slug) }}"
                class="product-card group block bg-white border border-brand-cream-mid hover:shadow-lg transition-all duration-300"
@@ -232,6 +232,7 @@
                 <div class="aspect-square bg-brand-cream-mid overflow-hidden">
                     <img src="{{ $featImg }}"
                          alt="{{ $product->name }}"
+                         width="500" height="500" decoding="async"
                          class="product-card__img w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                          loading="lazy">
                 </div>
@@ -270,7 +271,7 @@
 <section id="showroom-video" class="relative h-[70vh] overflow-hidden bg-brand-dark">
     {{-- ► Buraya showroom tanıtım videonuzu ekleyin --}}
     <video
-        autoplay
+        data-lazy-video
         muted
         loop
         playsinline
@@ -295,7 +296,7 @@
             <h2 class="font-display text-white text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 max-w-2xl mx-auto leading-tight">
                 {!! $siteSettings['home_showroom_title'] ?? '400 m² Showroom\'u<br><span class="text-brand-gold">Keşfedin</span>' !!}
             </h2>
-            <p class="text-white/60 mb-10 max-w-md mx-auto text-sm leading-relaxed">
+            <p class="text-white/80 mb-10 max-w-md mx-auto text-sm leading-relaxed">
                 {{ $siteSettings['home_showroom_desc'] ?? 'Modoko\'daki geniş showroom\'umuzda 100\'den fazla model ürünü bizzat görüp deneyimleyebilirsiniz.' }}
             </p>
             <div class="flex flex-wrap justify-center gap-4">
@@ -357,7 +358,7 @@
     @php
         $parallaxImg = !empty($siteSettings['home_parallax_image']) 
             ? asset('storage/' . $siteSettings['home_parallax_image']) 
-            : 'https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?w=1600&auto=format&fit=crop&q=80';
+            : 'https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?w=1200&auto=format&fit=crop&q=75';
     @endphp
     <div class="absolute inset-0 bg-fixed bg-center bg-cover bg-no-repeat transition-transform duration-[1.5s]" style="background-image: url('{{ $parallaxImg }}');"></div>
     <div class="absolute inset-0 bg-brand-navy/60"></div>
@@ -402,10 +403,10 @@
             <h2 class="font-display text-white text-3xl sm:text-4xl font-bold leading-tight mb-5">
                 {!! $siteSettings['contact_visit_title'] ?? 'En İyi Masa Sandalye İçin<br><span class="text-brand-gold">Görüşmeleriniz</span> Bekliyoruz' !!}
             </h2>
-            <p class="text-white/55 leading-relaxed mb-8 text-sm max-w-sm">
+            <p class="text-white/80 leading-relaxed mb-8 text-sm max-w-sm">
                 {{ $siteSettings['contact_visit_desc'] ?? 'Modoko\'nun kalbinde, geniş showroom\'umuzda sizi ağırlamaktan memnuniyet duyarız.' }}
             </p>
-            <ul class="space-y-3 mb-10 text-white/60 text-sm">
+            <ul class="space-y-3 mb-10 text-white/80 text-sm">
                 <li class="flex items-start gap-3">
                     <svg class="w-5 h-5 text-brand-gold flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     Modoko, Barbaros Hayrettin Paşa Cad. İstanbul
@@ -541,5 +542,29 @@
             iconUnmute.classList.toggle('hidden', video.muted);
         });
     }
+
+    // ── Lazy Load Showroom Video on Scroll (PageSpeed Optimization) ──
+    document.addEventListener('DOMContentLoaded', () => {
+        const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
+        if ('IntersectionObserver' in window) {
+            const videoObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const vid = entry.target;
+                        vid.autoplay = true;
+                        vid.play().catch(() => {});
+                        observer.unobserve(vid);
+                    }
+                });
+            }, { rootMargin: '200px 0px' });
+
+            lazyVideos.forEach(vid => videoObserver.observe(vid));
+        } else {
+            lazyVideos.forEach(vid => {
+                vid.autoplay = true;
+                vid.play().catch(() => {});
+            });
+        }
+    });
 </script>
 @endpush
