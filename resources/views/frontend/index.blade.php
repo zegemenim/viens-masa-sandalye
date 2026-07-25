@@ -16,6 +16,7 @@
         {{-- ► Buraya showroom videonuzun URL'sini src="" içine yapıştırın --}}
         <video
             id="hero-video"
+            autoplay
             muted
             loop
             playsinline
@@ -28,7 +29,7 @@
                 @php
                     $heroVid = Str::startsWith($siteSettings['hero_video_url'], 'http') ? $siteSettings['hero_video_url'] : asset('storage/' . $siteSettings['hero_video_url']);
                 @endphp
-                <source data-lazy-hero-src="{{ $heroVid }}" type="video/mp4">
+                <source src="{{ $heroVid }}" type="video/mp4">
             @endif
             {{-- Fallback image if video doesn't load --}}
             <img src="" alt="Viens Showroom" class="w-full h-full object-cover">
@@ -542,34 +543,9 @@
         });
     }
 
-    // ── Ultimate Smart Lazy Loading (PageSpeed & Lighthouse Armor) ──
+    // ── Below-The-Fold Lazy Loading (Showroom Video, Backgrounds & Iframes) ──
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. Smart-load Hero Video: Trigger instantly on first human touch/scroll/mouse, or fallback after 3.5s idle
-        let heroInitialized = false;
-        const initHeroVideo = () => {
-            if (heroInitialized) return;
-            heroInitialized = true;
-            const heroVid = document.getElementById('hero-video');
-            if (heroVid) {
-                const heroSource = heroVid.querySelector('source[data-lazy-hero-src]');
-                if (heroSource) {
-                    heroSource.src = heroSource.dataset.lazyHeroSrc;
-                    heroVid.load();
-                    heroVid.autoplay = true;
-                    heroVid.play().catch(() => {});
-                }
-            }
-        };
-
-        // Real users trigger video instantaneously upon physical interaction
-        ['scroll', 'touchstart', 'mousemove', 'keydown', 'click'].forEach(evt => {
-            window.addEventListener(evt, initHeroVideo, { once: true, passive: true });
-        });
-
-        // Automated testing bots (PageSpeed) don't click or touch, so video waits until testing audit completes
-        setTimeout(initHeroVideo, 3500);
-
-        // 2. IntersectionObserver for below-the-fold videos, backgrounds, and iframes
+        // IntersectionObserver for below-the-fold videos, backgrounds, and iframes
         if ('IntersectionObserver' in window) {
             // Showroom video lazy observer with deferred source assignment
             const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
@@ -587,7 +563,7 @@
                         observer.unobserve(vid);
                     }
                 });
-            }, { rootMargin: '200px 0px' });
+            }, { rootMargin: '300px 0px' });
             lazyVideos.forEach(vid => videoObserver.observe(vid));
 
             // Background images lazy observer (Parallax banner etc.)
