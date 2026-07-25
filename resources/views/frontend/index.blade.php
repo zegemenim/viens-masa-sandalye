@@ -64,8 +64,8 @@
 
             {{-- CTAs --}}
             <div class="flex flex-wrap gap-6 items-center" data-aos="fade-up" data-aos-delay="500">
-                <a href="{{ route('category.show', 'masalar') }}" class="group flex items-center gap-3 border border-brand-gold px-8 py-4 text-brand-gold hover:bg-brand-gold hover:text-white transition-all duration-500">
-                    <span class="font-display text-[0.7rem] tracking-[0.2em] uppercase">Koleksiyonu Keşfet</span>
+                <a href="{{ route('category.show', 'masalar') }}" class="group flex items-center gap-3 bg-black/20 backdrop-blur-md border border-brand-gold px-8 py-4 text-brand-gold hover:bg-brand-gold hover:text-white hover:shadow-[0_0_30px_rgba(220,165,74,0.5)] transition-all duration-500">
+                    <span class="font-display text-[0.7rem] tracking-[0.2em] uppercase font-semibold">Koleksiyonu Keşfet</span>
                     <svg class="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
             </div>
@@ -115,21 +115,21 @@
         <div class="flex items-stretch divide-x divide-brand-cream-mid overflow-x-auto">
             @forelse($categories ?? [] as $cat)
             <a href="{{ route('category.show', $cat->slug) }}"
-               class="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 px-10 py-6 hover:bg-brand-cream transition-colors group">
+               class="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 px-10 py-6 hover:bg-white hover:shadow-md hover:-translate-y-0.5 border-b-2 border-transparent hover:border-brand-gold transition-all duration-300 group">
                 <span class="font-display font-bold text-brand-navy text-sm group-hover:text-brand-gold transition-colors">{{ $cat->name }}</span>
                 <span class="text-brand-gray/70 text-[0.65rem] font-display">{{ $cat->products_count }} ürün</span>
             </a>
             @empty
             @foreach(['Masalar', 'Sandalyeler', 'Yemek Odası', 'Bar Sandalyeleri'] as $n)
-            <a href="#" class="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 px-10 py-6 hover:bg-brand-cream transition-colors group">
+            <a href="#" class="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 px-10 py-6 hover:bg-white hover:shadow-md hover:-translate-y-0.5 border-b-2 border-transparent hover:border-brand-gold transition-all duration-300 group">
                 <span class="font-display font-bold text-brand-navy text-sm group-hover:text-brand-gold transition-colors">{{ $n }}</span>
             </a>
             @endforeach
             @endforelse
             <a href="{{ route('category.show', 'masalar') }}"
-               class="flex-shrink-0 flex items-center justify-center gap-2 px-10 py-6 bg-brand-gold hover:bg-brand-gold-dark transition-colors group">
+               class="flex-shrink-0 flex items-center justify-center gap-2 px-10 py-6 bg-brand-gold hover:bg-brand-gold-dark hover:shadow-lg transition-all duration-300 group">
                 <span class="font-display font-bold text-white text-sm">Tümü</span>
-                <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                <svg class="w-3 h-3 text-white group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </div>
     </div>
@@ -227,14 +227,20 @@
                     : 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&auto=format&fit=crop&q=65&fm=webp';
             @endphp
             <a href="{{ route('product.show', $product->slug) }}"
-               class="product-card group block bg-white border border-brand-cream-mid hover:shadow-lg transition-all duration-300"
+               class="product-card group block bg-white border border-brand-cream-mid hover:shadow-2xl hover:border-brand-gold/50 hover:-translate-y-1.5 transition-all duration-500 rounded-xs overflow-hidden"
                id="product-{{ $product->id }}" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
-                <div class="aspect-square bg-brand-cream-mid overflow-hidden">
+                <div class="aspect-square bg-brand-cream-mid overflow-hidden relative">
                     <img src="{{ $featImg }}"
                          alt="{{ $product->name }}"
                          width="500" height="500" decoding="async"
                          class="product-card__img w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                          loading="lazy">
+                    <div class="absolute inset-0 bg-brand-navy/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex items-end justify-center p-4">
+                        <span class="bg-brand-gold text-white text-[0.68rem] font-display font-semibold tracking-[0.15em] uppercase px-5 py-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 shadow-xl flex items-center gap-2">
+                            Ürünü İncele 
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </span>
+                    </div>
                 </div>
                 <div class="p-4 border-t border-brand-cream-mid">
                     @if($product->category)

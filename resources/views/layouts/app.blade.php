@@ -9,6 +9,38 @@
     <meta name="description" content="@yield('meta_description', ($siteSettings['seo_description_home'] ?? 'Kaliteli ve şık masa sandalye modelleri'))">
     <meta name="keywords" content="@yield('meta_keywords', ($siteSettings['seo_keywords'] ?? 'viens, masa, sandalye, modoko, mobilya'))">
 
+    {{-- SEO & Canonical --}}
+    <link rel="canonical" href="{{ url()->current() }}" />
+    <meta property="og:title" content="@yield('meta_title', ($siteSettings['seo_title_home'] ?? 'Viens Masa Sandalye'))" />
+    <meta property="og:description" content="@yield('meta_description', ($siteSettings['seo_description_home'] ?? 'Kaliteli ve şık masa sandalye modelleri'))" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content="{{ $siteSettings['site_name'] ?? 'Viens Masa Sandalye' }}" />
+    <meta property="og:image" content="@yield('meta_image', (!empty($siteSettings['logo_path']) ? asset('storage/' . $siteSettings['logo_path']) : 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&auto=format&fit=crop&q=80'))" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {{-- Schema.org JSON-LD Microdata --}}
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "FurnitureStore",
+      "name": "{{ $siteSettings['site_name'] ?? 'Viens Masa Sandalye' }}",
+      "image": "{{ !empty($siteSettings['logo_path']) ? asset('storage/' . $siteSettings['logo_path']) : 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6' }}",
+      "description": "{{ $siteSettings['seo_description_home'] ?? '30 yıllık deneyimle modern ve şık masa sandalye koleksiyonları.' }}",
+      "address": {
+        "@@type": "PostalAddress",
+        "streetAddress": "{{ $siteSettings['contact_address'] ?? 'Modoko, Barbaros Hayrettin Paşa Cad.' }}",
+        "addressLocality": "Ümraniye",
+        "addressRegion": "İstanbul",
+        "addressCountry": "TR"
+      },
+      "telephone": "{{ $siteSettings['contact_phone'] ?? '+90 552 280 29 29' }}",
+      "openingHours": "Mo-Sa 09:00-18:30, Su 10:00-17:00",
+      "url": "{{ url('/') }}"
+    }
+    </script>
+
     {{-- Favicon --}}
     @if(!empty($siteSettings['logo_path']))
         <link rel="icon" type="image/png" href="{{ asset('storage/' . $siteSettings['logo_path']) }}">
@@ -34,15 +66,24 @@
     {{-- HEADER --}}
     <header id="main-header" class="fixed top-0 left-0 w-full z-[100] transition-all duration-500 {{ request()->routeIs('index') ? 'bg-transparent border-b border-white/5' : 'bg-brand-navy shadow-md border-b border-white/10' }}">
         {{-- Top Utility Bar --}}
-        <div id="top-bar" class="hidden lg:flex justify-between items-center px-10 py-2 bg-brand-dark/50 text-[0.65rem] text-white/70 tracking-widest font-display transition-all duration-500 border-b border-white/5">
-            <div class="flex gap-6">
-                <span>📍 {{ $siteSettings['contact_address'] ?? 'Modoko, İstanbul' }}</span>
-                <span>⏱ {{ $siteSettings['working_hours'] ?? 'Hergün: 09:00 - 18:30' }}</span>
+        <div id="top-bar" class="hidden lg:flex justify-between items-center px-10 py-2 bg-brand-dark/80 backdrop-blur-md text-[0.68rem] text-white/80 tracking-widest font-display transition-all duration-500 border-b border-white/5">
+            <div class="flex items-center gap-7">
+                <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-brand-gold shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>{{ $siteSettings['contact_address'] ?? 'Modoko, İstanbul' }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-brand-gold shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>{{ $siteSettings['working_hours'] ?? 'Hergün: 09:00 - 18:30' }}</span>
+                </div>
             </div>
-            <div class="flex gap-4">
-                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $siteSettings['contact_phone'] ?? '+905522802929') }}" class="hover:text-brand-gold transition-colors">{{ $siteSettings['contact_phone'] ?? '+90 552 280 29 29' }}</a>
+            <div class="flex items-center gap-6">
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $siteSettings['contact_phone'] ?? '+905522802929') }}" class="flex items-center gap-2 text-white/90 hover:text-brand-gold transition-colors font-semibold">
+                    <svg class="w-3.5 h-3.5 text-brand-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    {{ $siteSettings['contact_phone'] ?? '+90 552 280 29 29' }}
+                </a>
                 @if(!empty($siteSettings['social_instagram']))
-                    <a href="{{ $siteSettings['social_instagram'] }}" target="_blank" class="hover:text-brand-gold transition-colors">INSTAGRAM</a>
+                    <a href="{{ $siteSettings['social_instagram'] }}" target="_blank" class="px-2.5 py-0.5 border border-brand-gold/40 text-brand-gold hover:bg-brand-gold hover:text-white transition-all rounded-xs text-[0.6rem]">INSTAGRAM</a>
                 @endif
             </div>
         </div>
@@ -62,20 +103,20 @@
 
             {{-- Desktop Nav --}}
             <nav class="hidden lg:flex items-center gap-8 h-full">
-                <a href="{{ route('index') }}" class="text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors {{ request()->routeIs('index') ? 'text-brand-gold' : 'text-white/80 hover:text-white' }}">Ana Sayfa</a>
+                <a href="{{ route('index') }}" class="relative text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors py-2 {{ request()->routeIs('index') ? 'text-brand-gold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-gold' : 'text-white/80 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-gold hover:after:w-full after:transition-all after:duration-300' }}">Ana Sayfa</a>
                 
                 @if(isset($navCategories) && $navCategories->count() > 0)
                     @foreach($navCategories as $cat)
-                        <a href="{{ route('category.show', $cat->slug) }}" class="text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors {{ request()->url() == route('category.show', $cat->slug) ? 'text-brand-gold' : 'text-white/80 hover:text-white' }}">{{ $cat->name }}</a>
+                        <a href="{{ route('category.show', $cat->slug) }}" class="relative text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors py-2 {{ request()->url() == route('category.show', $cat->slug) ? 'text-brand-gold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-gold' : 'text-white/80 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-gold hover:after:w-full after:transition-all after:duration-300' }}">{{ $cat->name }}</a>
                     @endforeach
                 @else
-                    <a href="{{ route('category.show', 'masalar') }}" class="text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors {{ request()->is('kategori/masalar') ? 'text-brand-gold' : 'text-white/80 hover:text-white' }}">Masalar</a>
-                    <a href="{{ route('category.show', 'sandalyeler') }}" class="text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors {{ request()->is('kategori/sandalyeler') ? 'text-brand-gold' : 'text-white/80 hover:text-white' }}">Sandalyeler</a>
+                    <a href="{{ route('category.show', 'masalar') }}" class="relative text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors py-2 {{ request()->is('kategori/masalar') ? 'text-brand-gold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-gold' : 'text-white/80 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-gold hover:after:w-full after:transition-all after:duration-300' }}">Masalar</a>
+                    <a href="{{ route('category.show', 'sandalyeler') }}" class="relative text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors py-2 {{ request()->is('kategori/sandalyeler') ? 'text-brand-gold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-gold' : 'text-white/80 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-gold hover:after:w-full after:transition-all after:duration-300' }}">Sandalyeler</a>
                 @endif
                 
-                <a href="{{ route('about') }}" class="text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors {{ request()->routeIs('about') ? 'text-brand-gold' : 'text-white/80 hover:text-white' }}">Kurumsal</a>
-                <a href="{{ route('blog.index') }}" class="text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors {{ request()->routeIs('blog.*') ? 'text-brand-gold' : 'text-white/80 hover:text-white' }}">Yayınlar</a>
-                <a href="{{ route('contact') }}" class="text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors {{ request()->routeIs('contact') ? 'text-brand-gold' : 'text-white/80 hover:text-white' }}">İletişim</a>
+                <a href="{{ route('about') }}" class="relative text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors py-2 {{ request()->routeIs('about') ? 'text-brand-gold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-gold' : 'text-white/80 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-gold hover:after:w-full after:transition-all after:duration-300' }}">Kurumsal</a>
+                <a href="{{ route('blog.index') }}" class="relative text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors py-2 {{ request()->routeIs('blog.*') ? 'text-brand-gold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-gold' : 'text-white/80 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-gold hover:after:w-full after:transition-all after:duration-300' }}">Yayınlar</a>
+                <a href="{{ route('contact') }}" class="relative text-[0.75rem] font-display font-semibold tracking-[0.15em] uppercase transition-colors py-2 {{ request()->routeIs('contact') ? 'text-brand-gold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-brand-gold' : 'text-white/80 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-gold hover:after:w-full after:transition-all after:duration-300' }}">İletişim</a>
             </nav>
 
             {{-- Mobile Menu Button --}}
