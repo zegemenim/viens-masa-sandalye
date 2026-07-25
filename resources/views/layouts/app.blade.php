@@ -286,18 +286,20 @@
     {{-- AOS JS --}}
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof AOS !== 'undefined') {
-                window.requestAnimationFrame(() => {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (typeof AOS !== 'undefined') {
                     AOS.init({
                         duration: 800,
                         once: true,
                         offset: 50,
-                        easing: 'ease-out-quart'
+                        easing: 'ease-out-quart',
+                        disableMutationObserver: true
                     });
-                });
-            }
+                }
+            }, 150);
         });
     </script>
 </body>
 </html>
+
