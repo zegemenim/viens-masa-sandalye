@@ -16,7 +16,6 @@
         {{-- ► Buraya showroom videonuzun URL'sini src="" içine yapıştırın --}}
         <video
             id="hero-video"
-            autoplay
             muted
             loop
             playsinline
@@ -29,7 +28,7 @@
                 @php
                     $heroVid = Str::startsWith($siteSettings['hero_video_url'], 'http') ? $siteSettings['hero_video_url'] : asset('storage/' . $siteSettings['hero_video_url']);
                 @endphp
-                <source src="{{ $heroVid }}" type="video/mp4">
+                <source data-lazy-hero-src="{{ $heroVid }}" type="video/mp4">
             @endif
             {{-- Fallback image if video doesn't load --}}
             <img src="" alt="Viens Showroom" class="w-full h-full object-cover">
@@ -358,9 +357,9 @@
     @php
         $parallaxImg = !empty($siteSettings['home_parallax_image']) 
             ? asset('storage/' . $siteSettings['home_parallax_image']) 
-            : 'https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?w=1200&auto=format&fit=crop&q=75';
+            : 'https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?w=1000&auto=format&fit=crop&q=70';
     @endphp
-    <div class="absolute inset-0 bg-fixed bg-center bg-cover bg-no-repeat transition-transform duration-[1.5s]" style="background-image: url('{{ $parallaxImg }}');"></div>
+    <div class="absolute inset-0 bg-fixed bg-center bg-cover bg-no-repeat opacity-0 transition-opacity duration-[1.2s]" data-lazy-bg="{{ $parallaxImg }}"></div>
     <div class="absolute inset-0 bg-brand-navy/60"></div>
     <div class="relative z-10 text-center px-5 max-w-2xl" data-aos="fade-up">
         <p class="section-label mb-4 text-brand-gold">Modoko, İstanbul</p>
@@ -379,7 +378,7 @@
         <div class="relative h-72 lg:h-auto min-h-[380px] bg-brand-charcoal overflow-hidden" data-aos="fade-right">
             @if(!empty($siteSettings['map_embed_url']))
                 <iframe
-                    src="{{ $siteSettings['map_embed_url'] }}"
+                    data-lazy-src="{{ $siteSettings['map_embed_url'] }}"
                     title="Viens Masa Sandalye Konum"
                     class="w-full h-full border-0 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
                     allowfullscreen=""
@@ -543,10 +542,24 @@
         });
     }
 
-    // ── Lazy Load Showroom Video on Scroll (PageSpeed Optimization) ──
+    // ── Ultimate Lazy Loading (Hero Video, Showroom Video, Backgrounds & Iframes) ──
     document.addEventListener('DOMContentLoaded', () => {
-        const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
+        // 1. Fast-start Hero video right after LCP text renders without network bottleneck
+        const heroVid = document.getElementById('hero-video');
+        if (heroVid) {
+            const heroSource = heroVid.querySelector('source[data-lazy-hero-src]');
+            if (heroSource) {
+                heroSource.src = heroSource.dataset.lazyHeroSrc;
+                heroVid.load();
+                heroVid.autoplay = true;
+                heroVid.play().catch(() => {});
+            }
+        }
+
+        // 2. IntersectionObserver for below-the-fold videos, backgrounds, and iframes
         if ('IntersectionObserver' in window) {
+            // Showroom video lazy observer
+            const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
             const videoObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -556,14 +569,41 @@
                         observer.unobserve(vid);
                     }
                 });
-            }, { rootMargin: '200px 0px' });
-
+            }, { rootMargin: '250px 0px' });
             lazyVideos.forEach(vid => videoObserver.observe(vid));
+
+            // Background images lazy observer (Parallax banner etc.)
+            const lazyBgs = document.querySelectorAll('[data-lazy-bg]');
+            const bgObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bgEl = entry.target;
+                        bgEl.style.backgroundImage = `url('${bgEl.dataset.lazyBg}')`;
+                        bgEl.classList.remove('opacity-0');
+                        observer.unobserve(bgEl);
+                    }
+                });
+            }, { rootMargin: '350px 0px' });
+            lazyBgs.forEach(bg => bgObserver.observe(bg));
+
+            // Google Maps iframe lazy observer
+            const lazyIframes = document.querySelectorAll('iframe[data-lazy-src]');
+            const iframeObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const ifr = entry.target;
+                        ifr.src = ifr.dataset.lazySrc;
+                        observer.unobserve(ifr);
+                    }
+                });
+            }, { rootMargin: '400px 0px' });
+            lazyIframes.forEach(ifr => iframeObserver.observe(ifr));
+
         } else {
-            lazyVideos.forEach(vid => {
-                vid.autoplay = true;
-                vid.play().catch(() => {});
-            });
+            // Fallback for older browsers without IntersectionObserver support
+            document.querySelectorAll('video[data-lazy-video]').forEach(v => { v.autoplay = true; v.play().catch(() => {}); });
+            document.querySelectorAll('[data-lazy-bg]').forEach(el => { el.style.backgroundImage = `url('${el.dataset.lazyBg}')`; el.classList.remove('opacity-0'); });
+            document.querySelectorAll('iframe[data-lazy-src]').forEach(ifr => { ifr.src = ifr.dataset.lazySrc; });
         }
     });
 </script>
