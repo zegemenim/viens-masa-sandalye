@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth overflow-x-hidden">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,7 +69,7 @@
 
     @stack('styles')
 </head>
-<body class="font-sans text-brand-gray bg-[#F9F7F3] antialiased selection:bg-brand-gold selection:text-white flex flex-col min-h-screen overflow-x-hidden">
+<body class="font-sans text-brand-gray bg-[#F9F7F3] antialiased selection:bg-brand-gold selection:text-white flex flex-col min-h-screen overflow-x-hidden w-full max-w-full">
 
     {{-- HEADER --}}
     <header id="main-header" class="fixed top-0 left-0 w-full z-[100] transition-all duration-500 {{ request()->routeIs('index') ? 'bg-transparent border-b border-white/5' : 'bg-brand-navy shadow-md border-b border-white/10' }}">
@@ -125,31 +125,31 @@
                 <span class="w-6 h-[1px] bg-white transition-all duration-300 origin-right" id="line-3"></span>
             </button>
         </div>
-
-        {{-- Mobile Fullscreen Menu --}}
-        <div id="mobile-menu" class="fixed inset-0 bg-brand-navy z-40 transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col pt-24 px-8 pb-10 overflow-y-auto">
-            <nav class="flex flex-col gap-6 mt-10">
-                <a href="{{ route('index') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Ana Sayfa</a>
-                
-                @if(isset($navCategories) && $navCategories->count() > 0)
-                    @foreach($navCategories as $cat)
-                        <a href="{{ route('category.show', $cat->slug) }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">{{ $cat->name }}</a>
-                    @endforeach
-                @else
-                    <a href="{{ route('category.show', 'masalar') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Masalar</a>
-                    <a href="{{ route('category.show', 'sandalyeler') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Sandalyeler</a>
-                @endif
-                
-                <a href="{{ route('about') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Kurumsal</a>
-                <a href="{{ route('blog.index') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Yayınlar</a>
-                <a href="{{ route('contact') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">İletişim</a>
-            </nav>
-            <div class="mt-auto pt-10 border-t border-white/10">
-                <p class="text-white/50 text-xs font-display tracking-widest uppercase mb-4">Bize Ulaşın</p>
-                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $siteSettings['contact_phone'] ?? '+905522802929') }}" class="text-white text-xl font-display block mb-2">{{ $siteSettings['contact_phone'] ?? '+90 552 280 29 29' }}</a>
-            </div>
-        </div>
     </header>
+
+    {{-- Mobile Fullscreen Menu (Opacity & Visibility toggle prevents mobile viewport horizontal overflow bugs) --}}
+    <div id="mobile-menu" class="fixed inset-0 bg-brand-navy z-[99] opacity-0 pointer-events-none invisible transition-all duration-300 ease-in-out flex flex-col pt-28 px-8 pb-10 overflow-y-auto">
+        <nav class="flex flex-col gap-6 mt-6">
+            <a href="{{ route('index') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Ana Sayfa</a>
+            
+            @if(isset($navCategories) && $navCategories->count() > 0)
+                @foreach($navCategories as $cat)
+                    <a href="{{ route('category.show', $cat->slug) }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">{{ $cat->name }}</a>
+                @endforeach
+            @else
+                <a href="{{ route('category.show', 'masalar') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Masalar</a>
+                <a href="{{ route('category.show', 'sandalyeler') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Sandalyeler</a>
+            @endif
+            
+            <a href="{{ route('about') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Kurumsal</a>
+            <a href="{{ route('blog.index') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">Yayınlar</a>
+            <a href="{{ route('contact') }}" class="text-2xl text-white font-display font-light tracking-widest uppercase">İletişim</a>
+        </nav>
+        <div class="mt-auto pt-10 border-t border-white/10">
+            <p class="text-white/50 text-xs font-display tracking-widest uppercase mb-4">Bize Ulaşın</p>
+            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $siteSettings['contact_phone'] ?? '+905522802929') }}" class="text-white text-xl font-display block mb-2">{{ $siteSettings['contact_phone'] ?? '+90 552 280 29 29' }}</a>
+        </div>
+    </div>
 
     {{-- Main Content --}}
     <main class="flex-1 w-full flex flex-col relative">
@@ -301,22 +301,38 @@
         const line3 = document.getElementById('line-3');
 
         if(menuBtn && menu) {
-            menuBtn.addEventListener('click', () => {
-                const isOpen = !menu.classList.contains('translate-x-full');
+            function toggleMenu(e) {
+                if (e) e.preventDefault();
+                const isOpen = !menu.classList.contains('opacity-0');
                 
                 if (isOpen) {
-                    menu.classList.add('translate-x-full');
-                    document.body.style.overflow = 'auto';
-                    line1.style.transform = 'rotate(0) translateY(0)';
-                    line2.style.opacity = '1';
-                    line3.style.transform = 'rotate(0) translateY(0)';
+                    menu.classList.add('opacity-0', 'pointer-events-none', 'invisible');
+                    menu.classList.remove('opacity-100', 'pointer-events-auto', 'visible');
+                    document.body.style.overflow = '';
+                    if (line1) line1.style.transform = 'rotate(0) translateY(0)';
+                    if (line2) line2.style.opacity = '1';
+                    if (line3) line3.style.transform = 'rotate(0) translateY(0)';
                 } else {
-                    menu.classList.remove('translate-x-full');
+                    menu.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+                    menu.classList.add('opacity-100', 'pointer-events-auto', 'visible');
                     document.body.style.overflow = 'hidden';
-                    line1.style.transform = 'rotate(45deg) translate(2px, -2px)';
-                    line2.style.opacity = '0';
-                    line3.style.transform = 'rotate(-45deg) translate(2px, 2px)';
+                    if (line1) line1.style.transform = 'rotate(45deg) translate(2px, -2px)';
+                    if (line2) line2.style.opacity = '0';
+                    if (line3) line3.style.transform = 'rotate(-45deg) translate(2px, 2px)';
                 }
+            }
+
+            menuBtn.addEventListener('click', toggleMenu);
+
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('opacity-0', 'pointer-events-none', 'invisible');
+                    menu.classList.remove('opacity-100', 'pointer-events-auto', 'visible');
+                    document.body.style.overflow = '';
+                    if (line1) line1.style.transform = 'rotate(0) translateY(0)';
+                    if (line2) line2.style.opacity = '1';
+                    if (line3) line3.style.transform = 'rotate(0) translateY(0)';
+                });
             });
         }
     </script>

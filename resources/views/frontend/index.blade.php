@@ -83,7 +83,7 @@
     </div>
 
     {{-- Scroll indicator --}}
-    <div class="absolute bottom-8 left-10 lg:left-10 z-20 flex flex-col items-center gap-3" aria-hidden="true">
+    <div class="hidden lg:flex absolute bottom-8 left-10 z-20 flex-col items-center gap-3" aria-hidden="true">
         <span class="text-white/40 text-[0.55rem] font-display tracking-[0.3em] uppercase" style="writing-mode: vertical-rl;">Aşağı Kaydır</span>
         <div class="w-[1px] h-12 bg-white/20 relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1/2 bg-brand-gold animate-[bounce_2s_infinite]"></div>
